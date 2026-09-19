@@ -2,17 +2,23 @@
 --// TRIGGERBOT MODULE (Standalone)
 --=============================================================
 
---// CONFIG TABLE
+--// CONFIG TABLE (reads from shared.Rooze, falls back to defaults)
+local sharedCfg = shared.Rooze or {}
+local cfg       = sharedCfg['Trigger Bot'] or {}
+local settings  = sharedCfg['Settings'] or {}
+local kb        = (sharedCfg['Keybinds'] or {})['Trigger Bot'] or {}
+local weapons   = cfg['Specific Weapons'] or {}
+
 local CONFIG = {
-    Enabled             = false,   -- Master on/off
-    Delay               = 0.05,    -- Reaction delay in seconds
-    Mode                = "Hold",  -- "Hold" or "Toggle"
-    Key                 = "T",     -- Activation key
-    TeamCheck           = true,    -- Ignore teammates
-    IgnoreKnocked       = true,    -- Ignore knocked players
-    VisibleCheck        = false,   -- Require line-of-sight
-    WeaponFilterEnabled = false,   -- Only activate with whitelisted weapons
-    WeaponWhitelist     = {},      -- e.g. { "AK47", "M4A1" }
+    Enabled             = cfg['Enabled'] == true,
+    Delay               = cfg['Delay'] or 0.05,
+    Mode                = kb['Mode'] or "Hold",
+    Key                 = kb['Key'] or "T",
+    TeamCheck           = settings['Team Check'] ~= false,
+    IgnoreKnocked       = settings['Knock Check'] ~= false,
+    VisibleCheck        = settings['Visible Check'] == true,
+    WeaponFilterEnabled = weapons['Enabled'] == true,
+    WeaponWhitelist     = weapons['Weapons'] or {},
 }
 
 --=============================================================
